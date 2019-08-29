@@ -13,7 +13,8 @@ namespace BlackJack
             Random aleatorio = new Random();
             int jugadores = 0;
             int jugador = 0;
-            int puntos1 = 0, puntos2 = 0, puntos3 = 0, puntos4 = 0, puntos5 = 0, puntosGanador = 0;
+            int[] puntos = { 0, 0, 0, 0, 0, 0 };
+            int[] participantes = { 0, 1, 2, 3, 4, 5 };
             int ganador = 0;
             string totaljugadores = "";
 
@@ -80,66 +81,56 @@ namespace BlackJack
                             continuar = "n";
                         }
                     }
-                    switch(jugador)
-                    {
-                        case 1:
-                            puntos1 = suma;
-                            break;
-                        case 2:
-                            puntos2 = suma;
-                            break;
-                        case 3:
-                            puntos3 = suma;
-                            break;
-                        case 4:
-                            puntos4 = suma;
-                            break;
-                        case 5:
-                            puntos5 = suma;
-                            break;
-                    }
+                    puntos[jugador] = suma;
                 }
 
                 Console.WriteLine("Jugador " + jugador + ", tu total es de: " + suma);
-                Console.WriteLine("-------------------");
-                Console.WriteLine("¡Gracias por jugar!");
-                Console.WriteLine("-------------------\r\n");
-            }
-            if (puntos1 > puntosGanador && puntos1<=21)
-            {
-                puntosGanador = puntos1;
-                ganador = 1;    
-            }
-            if (puntos2 > puntosGanador && puntos2 <= 21)
-            {
-                puntosGanador = puntos2;
-                ganador = 2;
-            }
-            if (puntos3 > puntosGanador && puntos3 <= 21)
-            {
-                puntosGanador = puntos3;
-                ganador = 3;
-            }
-            if (puntos4 > puntosGanador && puntos4 <= 21)
-            {
-                puntosGanador = puntos4;
-                ganador = 4;
-            }
-            if (puntos5 > puntosGanador && puntos5 <= 21)
-            {
-                puntosGanador = puntos5;
-                ganador = 5;
-            }
-            if (puntosGanador == 0)
-            {
-                Console.WriteLine("Todos han perdido...");
-            }
-            else 
-            {
-                Console.WriteLine("Gana el jugador " + ganador + "!  Felicitaciones");
+
             }
 
+            for(int i = 1; i <= 5; i++)
+            {
+                for(int j = i + 1; j <= 5; j++)
+                {
+                    if(puntos[i] < puntos[j])
+                    {
+                        int punto = puntos[i];
+                        puntos[i] = puntos[j];
+                        puntos[j] = punto;
+                        int participante = participantes[i];
+                        participantes[i] = participantes[j];
+                        participantes[j] = participante;
 
+                    }
+                }
+            }
+            Console.WriteLine("\r\nResultados");
+            Console.WriteLine("----------");
+            for (int i = 1; i <= 5; i++)
+            {
+                if(puntos[i] <= 21 && puntos[i] > 0)
+                {
+                    if(ganador == 0)
+                    {
+
+                        Console.WriteLine("Ha ganado el jugador " + participantes[i] + " con un total de: " + puntos[i]);
+                        ganador++;
+                    }
+                    else
+                    {
+                        Console.WriteLine("El segundo puesto fue ocupado por el jugador " + participantes[i] + " con un total de: " + puntos[i]);
+                        break;
+                    }
+
+                }
+            }
+            if(ganador == 0)
+            {
+                Console.WriteLine("Todos los jugadores perdieron...");
+            }
+            Console.WriteLine("-------------------");
+            Console.WriteLine("¡Gracias por jugar!");
+            Console.WriteLine("-------------------\r\n");
             Console.ReadLine();
         }
     }
